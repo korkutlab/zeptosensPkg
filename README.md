@@ -21,9 +21,16 @@ unzip(zipfile="~/targetscore-master.zip", exdir="~/")
 # Switch to the targetscore-master directory
 setwd(dir = "~/targetscore-master/targetscore")
 
-# Render the RMarkdwon tutorial
-rmarkdown::render("vignettes/target_score_tutorial.Rmd", "html_document")
+# Delete any existing output and make the output directory
+output_dir <- "~/targetscore-master/output"
+if(dir.exists(output_dir)) {
+  unlink(output_dir)
+}
+dir.create(output_dir)
+
+# Render the RMarkdown tutorial
+rmarkdown::render("vignettes/target_score_tutorial.Rmd", "html_document", params = list(output_dir=output_dir))
 
 # The rendered HTML file will be in the same directory as the RMarkdown file 
-# Also various outputs will be generated at "~/targetscore-master/targetscore/inst/test_data/tutorial_output"
+# Also various outputs will be generated at "~/targetscore-master/output"
 ```

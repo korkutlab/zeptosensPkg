@@ -1,6 +1,8 @@
 ---
 title: "TargetScore Tutorial"
 output: rmarkdown::html_vignette
+params:
+  output_dir: ""
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Using TargetScore}
@@ -62,6 +64,11 @@ output_dir <- "inst/test_data/tutorial_output"
 data_dir <- ifelse(dir.exists(data_dir), data_dir, "inst/test_data")
 resource_dir <- ifelse(dir.exists(resource_dir), resource_dir, "inst/target_score_data")
 output_dir <- ifelse(dir.exists(output_dir), output_dir, ".")
+
+# If the notebook has a parameter for output_dir, use that
+if(params$output_dir != "") {
+  output_dir <- params$output_dir
+}
 
 # Number of antibodies
 n_prot <- 100
@@ -359,17 +366,22 @@ data <- results$ts_r$ts
 bk <- c(seq(min(data), -0.1, by = 0.01), seq(0, max(data), by = 0.01))
 
 filename <- file.path(output_dir, "heatmap_BT474.pdf")
-pdf(filename)
 pheatmap(data,
   scale = "none",
   color = c(
     colorRampPalette(colors = c("navy", "white"))(length(seq(min(data), -0.1, by = 0.01))),
     colorRampPalette(colors = c("white", "firebrick3"))(length(seq(0, max(data), by = 0.01)))
   ),
-  legend_breaks = seq(min(data), max(data), 2), cellwidth = 1, cellheight = 1, fontsize = 1, fontsize_row = 1,
-  breaks = bk
+  legend_breaks = seq(min(data), max(data), 2), 
+  cellwidth = 2, 
+  cellheight = 2, 
+  fontsize = 2, 
+  fontsize_row = 2,
+  breaks = bk,
+  treeheight_row = 0, 
+  treeheight_col = 0,
+  filename = filename
 )
-dev.off()
 ```
 
 ## Volcano Plot
